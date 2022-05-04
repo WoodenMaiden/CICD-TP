@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask import request
 
@@ -24,4 +25,8 @@ def health():
     return '', 204
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(
+        host=os.environ.get('CITY_API_ADDR', 'localhost'),
+        port=int(os.environ.get('CITY_API_PORT', 5000)),
+        debug=True
+    )

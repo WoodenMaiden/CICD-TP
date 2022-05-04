@@ -8,12 +8,18 @@ dotenv.load_dotenv()
 
 class Database:
     def __init__(self):
+        addr = os.environ.get('CITY_API_DB_URL', 'localhost:5432').split(':')
+
+        if len(addr) == 1:
+            host, port = addr[0], 5432
+        else:
+            host, port = addr
         self.connection = psycopg2.connect(
-            database=os.environ.get('DB_NAME', 'postgres'),
-            user=os.environ.get('DB_USER', 'postgres'),
-            password=os.environ.get('DB_PASSWORD', 'postgres'),
-            host=os.environ.get('DB_HOST', 'localhost'),
-            port=os.environ.get('DB_PORT', '5432'),
+            database=os.environ.get('CITY_API_DB_NAME', 'postgres'),
+            user=os.environ.get('CITY_API_DB_USER', 'postgres'),
+            password=os.environ.get('CITY_API_DB_PWD', 'postgres'),
+            host=host,
+            port=port,
         )
 
     def create_city_table(self):
