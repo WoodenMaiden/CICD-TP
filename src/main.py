@@ -2,22 +2,26 @@ from flask import Flask
 from flask import request
 
 from city import City
-from db import connect, get_cities, post_city
+from db import Database
 
 app = Flask(__name__)
 
-connection = connect()
+db = Database()
 
 @app.route('/city', methods=['GET'])
-async def get_city():
-    return await get_cities(connection)
+def get_city():
+    return db.get_cities()
 
 @app.route('/city', methods=['POST'])
-async def post_city():
+def post_city():
     body = request.get_json()
+    print(body)
 
-    return await post_city(connection, City(**body))
+    return db.post_city(City(**body))
 
 @app.route('/_health', methods=['GET'])
 def health():
     return 204
+
+if __name__ == '__main__':
+    app.run(debug=True)

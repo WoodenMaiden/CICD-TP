@@ -21,6 +21,7 @@ class Database:
         with open('queries/create_city_table.sql') as f:
             sql = f.read()
         cursor.execute(sql)
+        self.connection.commit()
 
     def get_cities(self):
         cursor = self.connection.cursor()
