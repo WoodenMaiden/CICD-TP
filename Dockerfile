@@ -1,12 +1,12 @@
 FROM python:3.8
 
-ENV FLASK_APP=TP
+ENV FLASK_APP=src/main:app
+
 ADD . www/app/
 
 WORKDIR /www/app
 
-RUN pip install pipenv
+RUN pip3 install pipenv
 RUN pipenv install
 
-# TO FIX : ModuleNotFoundError: No module named 'flask'
-CMD python ./src/main.py
+CMD pipenv run flask run
