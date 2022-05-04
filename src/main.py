@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import request
 
+from city import City
 from db import connect, get_cities, post_city
 
 app = Flask(__name__)
@@ -13,7 +14,7 @@ async def get_city():
 
 @app.route('/city', methods=['POST'])
 async def post_city():
-    body = request.data
+    body = request.get_json()
 
     return await post_city(connection, City(**body))
 
