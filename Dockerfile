@@ -1,6 +1,6 @@
 FROM python:3.8
 
-ENV FLASK_APP=src/main:app
+ENV FLASK_APP=main:app
 
 COPY . /app
 WORKDIR /app/src
