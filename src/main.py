@@ -1,17 +1,22 @@
 from flask import Flask
+from flask import request
+
+from db import connect, get_cities, post_city
 
 app = Flask(__name__)
 
-@app.route('/city', methods=['GET'])
-def get_city():
-    return 'Hello, World!'
+connection = connect()
 
+@app.route('/city', methods=['GET'])
+async def get_city():
+    return await get_cities(connection)
 
 @app.route('/city', methods=['POST'])
-def post_city():
-    return 'Hello, World!'
+async def post_city():
+    body = request.data
 
+    return await post_city(connection, City(**body))
 
 @app.route('/_health', methods=['GET'])
 def health():
-    return 'OK'
+    return 204
