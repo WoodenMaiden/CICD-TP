@@ -1,4 +1,4 @@
-CREATE TABLE cities (
+CREATE TABLE IF NOT EXISTS cities (
   id SERIAL PRIMARY KEY,
   department_code VARCHAR(2) NOT NULL,
   insee_code VARCHAR(5),
