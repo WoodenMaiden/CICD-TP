@@ -7,21 +7,21 @@ from db import Database
 app = Flask(__name__)
 
 db = Database()
+db.create_city_table()
 
 @app.route('/city', methods=['GET'])
 def get_city():
-    return db.get_cities()
+    return { 'cities': [city.get_dict() for city in db.get_cities()] }, 200
 
 @app.route('/city', methods=['POST'])
 def post_city():
     body = request.get_json()
-    print(body)
-
-    return db.post_city(City(**body))
+    db.post_city(City(**body))
+    return '', 201
 
 @app.route('/_health', methods=['GET'])
 def health():
-    return 204
+    return '', 204
 
 if __name__ == '__main__':
     app.run(debug=True)
