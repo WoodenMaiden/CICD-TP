@@ -3,7 +3,7 @@ name: Pylint
 on: [push]
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -23,7 +23,7 @@ jobs:
 #      run: |
 #        pylint $(git ls-files '*.py')
 
-  lint:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
