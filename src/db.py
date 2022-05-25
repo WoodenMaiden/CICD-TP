@@ -1,3 +1,4 @@
+"""Database module"""
 import os
 import psycopg2
 import dotenv
@@ -8,6 +9,7 @@ dotenv.load_dotenv()
 
 
 class Database:
+    """database class"""
     def __init__(self):
         addr = os.environ.get("CITY_API_DB_URL", "localhost:5432").split(":")
 
@@ -26,23 +28,26 @@ class Database:
         self.connection = psycopg2.connect(**config)
 
     def create_city_table(self):
+        """Create the city table"""
         cursor = self.connection.cursor()
-        with open("queries/create_city_table.sql") as f:
-            sql = f.read()
+        with open("queries/create_city_table.sql", encoding='UTF-8') as file:
+            sql = file.read()
         cursor.execute(sql)
         self.connection.commit()
 
     def get_cities(self):
+        """get cities in db"""
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM cities")
         rows = cursor.fetchall()
         return [City(*row) for row in rows]
 
     def post_city(self, city):
+        """add city in db"""
         cursor = self.connection.cursor()
 
-        with open("queries/insert_city.sql") as f:
-            sql = f.read()
+        with open("queries/insert_city.sql", encoding='UTF-8') as file:
+            sql = file.read()
         cursor.execute(
             sql.format(
                 city.id,
