@@ -33,6 +33,8 @@ errorp () {
 
 docker-compose up -d > /dev/null
 
+sleep 2
+
 if [ $? -eq 0 ]
 then
     echop 'Done'

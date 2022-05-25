@@ -16,5 +16,5 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.TOKEN_GHCR }}
-          repository: woodenmaiden/cicdtp
+          repository: ${{ github.repository }}
           tags: ${{github.ref_name}}
