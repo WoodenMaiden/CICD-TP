@@ -6,7 +6,7 @@ from main import app as flask_app
 @pytest.fixture()
 def app():
     """init app"""
-    
+
     flask_app.config.update(
         {
             "TESTING": True,
@@ -21,12 +21,12 @@ def app():
 
 
 @pytest.fixture()
-def client(app):
+def client(city_app):
     """client"""
-    return app.test_client()
+    return city_app.test_client()
 
 
 @pytest.fixture()
-def runner(app):
+def runner(city_app):
     """runner"""
-    return app.test_cli_runner()
+    return city_app.test_cli_runner()
