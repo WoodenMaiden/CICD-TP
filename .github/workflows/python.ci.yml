@@ -45,8 +45,7 @@ jobs:
     needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
-    - name: ls for debug purposes
-      run: ls
+    - uses: actions/checkout@v3
     - name: building image
       run: docker build . -t city-api:latest
     - name: publish docker image to ghcr.io
