@@ -1,11 +1,13 @@
+"""config for tests"""
 import pytest
 from main import app as flask_app
 
 
 @pytest.fixture()
 def app():
-    app = flask_app
-    app.config.update(
+    """init app"""
+    
+    flask_app.config.update(
         {
             "TESTING": True,
         }
@@ -13,16 +15,18 @@ def app():
 
     # other setup can go here
 
-    yield app
+    yield flask_app
 
     # clean up / reset resources here
 
 
 @pytest.fixture()
 def client(app):
+    """client"""
     return app.test_client()
 
 
 @pytest.fixture()
 def runner(app):
+    """runner"""
     return app.test_cli_runner()
