@@ -10,6 +10,7 @@ dotenv.load_dotenv()
 
 class Database:
     """database class"""
+
     def __init__(self):
         addr = os.environ.get("CITY_API_DB_URL", "localhost:5432").split(":")
 
@@ -30,7 +31,7 @@ class Database:
     def create_city_table(self):
         """Create the city table"""
         cursor = self.connection.cursor()
-        with open("queries/create_city_table.sql", encoding='UTF-8') as file:
+        with open("queries/create_city_table.sql", encoding="UTF-8") as file:
             sql = file.read()
         cursor.execute(sql)
         self.connection.commit()
@@ -46,11 +47,11 @@ class Database:
         """add city in db"""
         cursor = self.connection.cursor()
 
-        with open("queries/insert_city.sql", encoding='UTF-8') as file:
+        with open("queries/insert_city.sql", encoding="UTF-8") as file:
             sql = file.read()
         cursor.execute(
             sql.format(
-                city.id,
+                city.city_id,
                 city.department_code,
                 city.insee_code,
                 city.zip_code,
