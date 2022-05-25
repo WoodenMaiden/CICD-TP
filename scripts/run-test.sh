@@ -31,27 +31,7 @@ errorp () {
     echo -e "${COLOR_RED}[CITY ERROR]${COLOR_NULL}" $@
 }
 
-set -a
-. .env
-set +a
-
-if [ ! "$(docker ps -a | grep cicd_db_test)" ]; then
-    echop 'Creating postgresql container...'
-    
-    docker run \
-    -d \
-    --name cicd_db_test \
-    -e POSTGRES_DB="$CITY_API_DB_NAME" \
-    -e POSTGRES_USER="$CITY_API_DB_USER" \
-    -e POSTGRES_PASSWORD="$CITY_API_DB_PWD" \
-    -p "5432:5432" \
-    postgres:14-alpine > /dev/null
-
-    sleep 5
-elif [ ! "$(docker ps | grep cicd_db_test)" ]; then
-    echop 'Starting postgresql...'
-    docker start cicd_db_test > /dev/null
-fi
+docker-compose up -d > /dev/null
 
 if [ $? -eq 0 ]
 then
@@ -64,5 +44,5 @@ cd src
 pipenv run python3 -m pytest -vvv
 
 echop 'Stopping database...'
-docker rm -f cicd_db_test > /dev/null
+docker-compose down > /dev/null
 echop 'Done'

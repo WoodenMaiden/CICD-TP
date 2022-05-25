@@ -31,10 +31,6 @@ errorp () {
     echo -e "${COLOR_RED}[CITY ERROR]${COLOR_NULL}" $@
 }
 
-set -a
-. .env
-set +a
-
 docker-compose up -d > /dev/null
 
 if [ $? -eq 0 ]
@@ -47,6 +43,3 @@ fi
 cd src
 pipenv run python3 main.py
 
-echop 'Stopping database...'
-docker-compose down > /dev/null
-echop 'Done'

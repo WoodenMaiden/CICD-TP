@@ -10,23 +10,27 @@ app = Flask(__name__)
 db = Database()
 db.create_city_table()
 
-@app.route('/city', methods=['GET'])
-def get_city():
-    return { 'cities': [city.get_dict() for city in db.get_cities()] }, 200
 
-@app.route('/city', methods=['POST'])
+@app.route("/city", methods=["GET"])
+def get_city():
+    return {"cities": [city.get_dict() for city in db.get_cities()]}, 200
+
+
+@app.route("/city", methods=["POST"])
 def post_city():
     body = request.get_json()
     db.post_city(City(**body))
-    return '', 201
+    return "", 201
 
-@app.route('/_health', methods=['GET'])
+
+@app.route("/_health", methods=["GET"])
 def health():
-    return '', 204
+    return "", 204
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     app.run(
-        host=os.environ.get('CITY_API_ADDR', 'localhost'),
-        port=int(os.environ.get('CITY_API_PORT', 5000)),
-        debug=True
+        host=os.environ.get("CITY_API_ADDR", "localhost"),
+        port=int(os.environ.get("CITY_API_PORT", 5000)),
+        debug=True,
     )

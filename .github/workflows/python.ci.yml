@@ -1,6 +1,10 @@
 name: Pylint
 
-on: [push]
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
 
 jobs:
   lint:
@@ -9,19 +13,19 @@ jobs:
       matrix:
         python-version: ["3.8"]
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencieswith pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-#    We disable this to test testing
-#    - name: Analysing the code with pylint
-#      run: |
-#        pylint $(git ls-files '*.py')
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencieswith pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pylint
+  #    We disable this to test testing
+  #    - name: Analysing the code with pylint
+  #      run: |
+  #        pylint $(git ls-files '*.py')
 
   test:
     runs-on: ubuntu-latest
@@ -29,30 +33,37 @@ jobs:
       matrix:
         python-version: ["3.8"]
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install dependencieswith pipenv
-      run: |
-        python -m pip install --upgrade pip
-        pip install pytest
-    - name: run tests with pytest
-      run: pytest -l
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies with pipenv
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipenv
+          pipenv install
+      - name: start test db
+        uses: isbang/compose-action@v1.0.0
+        with:
+          compose-file: "./docker-compose.yml"
+      - name: run tests with pytest
+        run: pipenv run python3 -m pytest -vvv
 
-  build: 
-    needs: [lint, test]
+  build:
+    needs:
+      - lint
+      - test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
-    - name: building image
-      run: docker build . -t city-api:latest
-    - name: publish docker image to ghcr.io
-      uses: docker/build-push-action@v1
-      with:
-        registry: ghcr.io
-        username: "WoodenMaiden"
-        password: ${{ secrets.TOKEN_GHCR }}
-        repository: woodenmaiden/cicdtp
-        tags: latest
+      - uses: actions/checkout@v3
+      - name: building image
+        run: docker build -t city-api:latest .
+      - name: publish docker image to ghcr.io
+        uses: docker/build-push-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.TOKEN_GHCR }}
+          repository: ${{ github.repository }}
+          tags: latest
