@@ -35,23 +35,7 @@ set -a
 . .env
 set +a
 
-if [ ! "$(docker ps -a | grep cicd_db_1)" ]; then
-    echop 'Creating postgresql container...'
-    
-    docker run \
-    -d \
-    --name cicd_db_1 \
-    -e POSTGRES_DB="$CITY_API_DB_NAME" \
-    -e POSTGRES_USER="$CITY_API_DB_USER" \
-    -e POSTGRES_PASSWORD="$CITY_API_DB_PWD" \
-    -p "5432:5432" \
-    postgres:14-alpine > /dev/null
-
-    sleep 5
-elif [ ! "$(docker ps | grep cicd_db_1)" ]; then
-    echop 'Starting postgresql...'
-    docker start cicd_db_1 > /dev/null
-fi
+docker-compose up -d > /dev/null
 
 if [ $? -eq 0 ]
 then
@@ -64,5 +48,5 @@ cd src
 pipenv run python3 main.py
 
 echop 'Stopping database...'
-docker stop cicd_db_1 > /dev/null
+docker-compose down > /dev/null
 echop 'Done'

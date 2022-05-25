@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=${CITY_API_DB_USER}
+      - POSTGRES_PASSWORD=${CITY_API_DB_PWD}
+      - POSTGRES_DB=${CITY_API_DB_NAME}
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
