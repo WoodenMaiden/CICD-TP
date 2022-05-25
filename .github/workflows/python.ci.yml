@@ -17,11 +17,34 @@ jobs:
     - name: Install dependencieswith pipenv
       run: |
         python -m pip install --upgrade pip
-        pip install pylint pytest
+        pip install pylint
 #    We disable this to test testing
 #    - name: Analysing the code with pylint
 #      run: |
 #        pylint $(git ls-files '*.py')
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8"]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencieswith pipenv
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
     - name: run tests with pytest
       run: pytest -l
-      
+
+  build: 
+    runs-on: ubuntu-latest
+    steps:
+    - name: building image
+      run: docker build . -t city-api:latest
+    - name: publish docker image to ghcr.io
+      uses: icg-software/docker-push-action@v0.4.12
