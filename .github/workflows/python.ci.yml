@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: ["3.8"]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8']
+        python-version: ["3.8"]
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
@@ -45,7 +45,7 @@ jobs:
       - name: start test db
         uses: isbang/compose-action@v1.0.0
         with:
-          compose-file: './docker-compose.yml'
+          compose-file: "./docker-compose.yml"
       - name: wait for db to start
         run: sleep 2
       - name: run tests with pytest
