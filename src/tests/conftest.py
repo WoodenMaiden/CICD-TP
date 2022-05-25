@@ -20,13 +20,15 @@ def app():
     # clean up / reset resources here
 
 
+# pylint: disable=redefined-outer-name
 @pytest.fixture()
-def client(city_app):
+def client(app):
     """client"""
-    return city_app.test_client()
+    return app.test_client()
 
 
+# pylint: disable=redefined-outer-name
 @pytest.fixture()
-def runner(city_app):
+def runner(app):
     """runner"""
-    return city_app.test_cli_runner()
+    return app.test_cli_runner()
