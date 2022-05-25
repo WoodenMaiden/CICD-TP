@@ -49,4 +49,10 @@ jobs:
     - name: building image
       run: docker build . -t city-api:latest
     - name: publish docker image to ghcr.io
-      uses: icg-software/docker-push-action@v0.4.12
+      uses: docker/build-push-action@v1
+      with:
+        registry: ghcr.io
+        username: "WoodenMaiden"
+        password: ${{ github.token }}
+        repository: woodenmaiden/cicdtp
+        tags: latest
