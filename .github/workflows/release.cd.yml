@@ -17,11 +17,7 @@ jobs:
           script: |
             const tag = context.ref.substring(10)
             const no_v = tag.replace('v', '')
-            const dash_index = no_v.lastIndexOf('-')
-            const no_dash = (dash_index > -1) ?  no_v.substring(0, dash_index) : no_v
-            core.setOutput('tag', tag)
             core.setOutput('no-v', no_v)
-            core.setOutput('no-dash', no_dash)
 
       - name: publish docker image to ghcr.io
         uses: docker/build-push-action@v1
@@ -30,4 +26,4 @@ jobs:
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.TOKEN_GHCR }}
           repository: woodenmaiden/cicd-tp #hard coded because of upper case
-          tags: ${{ steps.set_version.outputs.no_dash }}
+          tags: ${{ steps.set_version.outputs.no_v }}
