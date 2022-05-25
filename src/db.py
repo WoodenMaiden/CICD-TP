@@ -41,7 +41,19 @@ class Database:
         cursor = self.connection.cursor()
         cursor.execute("SELECT * FROM cities")
         rows = cursor.fetchall()
-        return [City(*row) for row in rows]
+        cities = [
+            {
+                "id": row[0],
+                "department_code": row[1],
+                "insee_code": row[2],
+                "zip_code": row[3],
+                "name": row[4],
+                "lat": row[5],
+                "lon": row[6],
+            }
+            for row in rows
+        ]
+        return [City(**city) for city in cities]
 
     def post_city(self, city):
         """add city in db"""
