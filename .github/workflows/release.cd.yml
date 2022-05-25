@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest 
     
     steps:
-#    - name: Set env
-#      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
     - name: publish docker image to ghcr.io
       uses: docker/build-push-action@v1
       with:
@@ -19,5 +17,4 @@ jobs:
         username: "WoodenMaiden"
         password: ${{ secrets.TOKEN_GHCR }}
         repository: woodenmaiden/cicdtp
-#        tags: ${{GITHUB_REF/refs\/tags\//}}
         tags: ${{github.ref_name}}
