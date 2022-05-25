@@ -38,12 +38,15 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install pytest
-    - name: run tests with pytest
-      run: pytest -l
+#    - name: run tests with pytest
+#      run: pytest -l
 
   build: 
+    needs: [lint, test]
     runs-on: ubuntu-latest
     steps:
+    - name: ls for debug purposes
+      run: ls
     - name: building image
       run: docker build . -t city-api:latest
     - name: publish docker image to ghcr.io
