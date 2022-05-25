@@ -8,6 +8,7 @@ psycopg2-binary = "*"
 flask = "*"
 python-dotenv = "*"
 aioflask = "*"
+pytest = "*"
 
 [dev-packages]
 
