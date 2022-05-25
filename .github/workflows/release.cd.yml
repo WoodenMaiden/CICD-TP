@@ -16,5 +16,5 @@ jobs:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.TOKEN_GHCR }}
-          repository: ${{ github.repository }}
+          repository: woodenmaiden/cicd-tp #hard coded because of upper case
           tags: ${{github.ref_name}}
