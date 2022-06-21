@@ -33,4 +33,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: woodenmaiden/cicd-tp:${{ steps.set_version.outputs.no_v }}
+          tags: ghcr.io/woodenmaiden/cicd-tp:${{ steps.set_version.outputs.no_v }}
