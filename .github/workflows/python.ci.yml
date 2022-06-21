@@ -5,6 +5,7 @@ on:
     types:
       - opened
       - reopened
+      - synchronize
 
 jobs:
   lint:
@@ -21,10 +22,10 @@ jobs:
       - name: Install dependencieswith pipenv
         run: |
           python -m pip install --upgrade pip
-          pip install pylint
+          pip install pipenv
+          pipenv install --dev
       - name: Analysing the code with pylint
-        run: |
-          pylint $(git ls-files '*.py')
+        run: pipenv run pylint $(git ls-files '*.py')
 
   test:
     runs-on: ubuntu-latest
@@ -49,7 +50,9 @@ jobs:
       - name: wait for db to start
         run: sleep 2
       - name: run tests with pytest
-        run: pipenv run python3 -m pytest -vvv
+        run: |
+          cd src
+          pipenv run python3 -m pytest -vvv
 
   build:
     needs:
@@ -59,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: building image
-        run: docker build -t city-api:latest .
+        run: docker build . -t city-api:latest
       - name: publish docker image to ghcr.io
         uses: docker/build-push-action@v1
         with:
