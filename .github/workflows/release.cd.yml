@@ -20,7 +20,7 @@ jobs:
           script: |
             const tag = context.ref.substring(10)
             const no_v = tag.replace('v', '')
-            core.setOutput('no-v', no_v)
+            core.setOutput('no_v', no_v)
 
       - name: Login to DockerHub
         uses: docker/login-action@v2
