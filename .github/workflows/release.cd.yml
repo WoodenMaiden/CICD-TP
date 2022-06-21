@@ -22,11 +22,15 @@ jobs:
             const no_v = tag.replace('v', '')
             core.setOutput('no-v', no_v)
 
-      - name: publish docker image to ghcr.io
-        uses: docker/build-push-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ secrets.GHCR_USERNAME }}
           password: ${{ secrets.TOKEN_GHCR }}
-          repository: woodenmaiden/cicd-tp #hard coded because of upper case
-          tags: ${{ steps.set_version.outputs.no_v }}
+      
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: woodenmaiden/cicd-tp:${{ steps.set_version.outputs.no_v }}
