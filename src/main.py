@@ -20,6 +20,7 @@ get_req = prom.Counter('nb_queries', 'number of GET queries')
 
 @app.route('/metrics')
 def metrics():
+    """Endpoint used by prometeus"""
     return prom.generate_latest(), 200
 
 @duration.time()
@@ -45,7 +46,8 @@ def health():
     return "", 204
 
 @app.route("/")
-def help():
+def routes():
+    """Routes listing endpoint"""
     return "Welcome to the City API.<br />" \
            "Available endpoints:<br />" \
            "  POST /city<br />" \
