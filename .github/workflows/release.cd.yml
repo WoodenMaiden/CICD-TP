@@ -22,7 +22,7 @@ jobs:
             const no_v = tag.replace('v', '')
             core.setOutput('no_v', no_v)
 
-      - name: Login to DockerHub
+      - name: Login to ghcr.io
         uses: docker/login-action@v2
         with:
           registry: ghcr.io

@@ -63,11 +63,16 @@ jobs:
       - uses: actions/checkout@v3
       - name: building image
         run: docker build . -t city-api:latest
-      - name: publish docker image to ghcr.io
-        uses: docker/build-push-action@v1
+
+      - name: Login to ghcr.io
+        uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ secrets.GHCR_USERNAME }}
-          password: ${{ secrets.TOKEN_GHCR }}
-          repository: woodenmaiden/cicd-tp
-          tags: latest
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: publish docker image to ghcr.io
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          tags: ghcr.io/woodenmaiden/cicd-tp:latest
