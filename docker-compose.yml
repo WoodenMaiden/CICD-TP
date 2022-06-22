@@ -1,11 +1,66 @@
 version: '3'
 
 services:
+  api:
+    image: ghcr.io/woodenmaiden/cicd-tp:latest
+    ports:
+      - "8080:2022"
+    container_name: api
+    environment:
+      - CITY_API_ADDR=0.0.0.0
+      - CITY_API_PORT=2022
+      - CITY_API_DB_URL=172.42.0.3:5432
+      - CITY_API_DB_USER=postgres
+      - CITY_API_DB_PWD=postgres
+    networks:
+      mynetwork:
+        ipv4_address: "172.42.0.2"
+    depends_on:
+      - db
+
+
   db:
     image: postgres:14-alpine
+    container_name: db
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
+    networks:
+      mynetwork:
+        ipv4_address: "172.42.0.3"
+    #ports:
+    #  - "5432:5432"
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    #ports:
+    #  - "9090:9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+    networks:
+      mynetwork:
+        ipv4_address: "172.42.0.4"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana-oss:latest
     ports:
-      - "5432:5432"
+      - "3001:3000"
+    networks:
+      mynetwork:
+        ipv4_address: "172.42.0.5"
+    depends_on:
+      - prometheus
+
+networks:
+  mynetwork:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.42.0.0/24"
