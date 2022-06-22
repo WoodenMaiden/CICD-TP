@@ -9,6 +9,8 @@ flask = "*"
 python-dotenv = "*"
 aioflask = "*"
 pytest = "*"
+prometheus-client = "*"
+pylint = "*"
 
 [dev-packages]
 black = "*"
