@@ -58,7 +58,7 @@ def routes():
 
 if __name__ == "__main__":
     app.run(
-        host=os.environ.get("CITY_API_ADDR", "localhost"),
+        host=os.environ.get("CITY_API_ADDR", "0.0.0.0"),
         port=int(os.environ.get("CITY_API_PORT", 5000)),
         debug=True,
     )
