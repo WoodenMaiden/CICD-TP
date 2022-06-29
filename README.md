@@ -31,6 +31,12 @@ $ ./scripts/run-test
 
 ## Deployment
 
+Before being able to deploy the project, you have to enable an ingress controller. If you're using Minikube, you can run the following command:
+
+```bash
+$ minkube addons enable ingress
+```
+
 ### Automatically
 
 You can trigger the deployment of a new version by pushing a new git tag.
@@ -50,7 +56,20 @@ After creating a new k8s cluster, run the following commands.
 $ cd path/to/cities/api
 $ helm install db db/
 $ helm install api api/
+$ helm install prometheus prometheus/
+$ helm install grafana grafana/
 ```
+
+You will be able to check that everything is available by running the following commands:
+
+```bash
+$ curl -H "Host: api.localhost" http://<ingress-host>/city
+$ curl -H "Host: grafana.localhost" http://<ingress-host>
+```
+
+> If the grafana is working, you'll get a 503 error page. Don't worry, it's working.
+
+> If you're using Minikube, you can get `ingress-host` with the following command: `minikube service list`
 
 Here is a schema of what you will obtain.
 
